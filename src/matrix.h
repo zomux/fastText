@@ -50,6 +50,7 @@ class Matrix {
 
     void save(std::ostream&);
     void load(std::istream&);
+    void load_glove(std::ifstream&, int64_t n_word, int64_t n_dim);
 };
 
 }

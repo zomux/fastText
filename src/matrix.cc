@@ -16,6 +16,10 @@
 #include "utils.h"
 #include "vector.h"
 
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
 namespace fasttext {
 
 Matrix::Matrix() {
@@ -139,6 +143,30 @@ void Matrix::load(std::istream& in) {
   delete[] data_;
   data_ = new real[m_ * n_];
   in.read((char*) data_, m_ * n_ * sizeof(real));
+}
+
+/**
+* Load matrix in the Glove format.
+*/
+void Matrix::load_glove(std::ifstream& in, int64_t n_word, int64_t n_dim){
+    m_ = n_word;
+    n_ = n_dim;
+    data_ = new real[m_ * n_];
+    int row = 0;
+    for (std::string line; std::getline(in, line);) {
+        // std::cout << row << " ";
+        assert(row < m_);
+        std::vector<std::string> parts;
+        std::stringstream ss(line);
+        for (std::string t; std::getline(ss, t, ' ');) {
+            parts.push_back(t);
+        }
+        assert(parts.size() == n_ + 1);
+        for (int i=0; i < n_; ++i) {
+            data_[row * n_ + i] = std::atof(parts[i + 1].c_str());
+        }
+        row ++;
+    }
 }
 
 }

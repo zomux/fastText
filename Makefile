@@ -48,5 +48,8 @@ fasttext.o: src/fasttext.cc src/*.h
 fasttext: $(OBJS) src/fasttext.cc
 	$(CXX) $(CXXFLAGS) $(OBJS) src/main.cc -o fasttext
 
+export_glove: $(OBJS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) tools/glove.cc -o export_glove
+
 clean:
-	rm -rf *.o fasttext
+	rm -rf *.o fasttext export_glove
